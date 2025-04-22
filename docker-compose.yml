@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mariadb:10.6.20
+    container_name: phpma_maria
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: defaultpassword
+
+  php:
+    image: php:8.3.14-apache
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - './php/www:/var/www/html/'
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    container_name: phpmyadmin
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+      - TESTSUITE_PASSWORD=defaultpassword
+    depends_on:
+      - db
